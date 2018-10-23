@@ -36,7 +36,8 @@ export const sendlogin = () => (dispatch, getState) => {
 }
 
 const fetchlogin = (userPasswToken) => (dispatch) => {
-  let loginurl = "http://localhost:8291/jportal/api/v2/auth/login";
+  // let loginurl = "http://localhost:8291/jportal/api/v2/auth/login";
+  let loginurl = "http://localhost:8080/jportal/api/v2/auth/login";
   fetch(loginurl,{
     method: "GET",
     mode: "cors",
