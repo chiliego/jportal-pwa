@@ -189,6 +189,7 @@ class MyApp extends connect(store)(LitElement) {
       <!-- This gets hidden on a small screen-->
       <nav class="toolbar-list">
         <a ?selected="${this._page === 'login'}" href="/login">Login</a>
+        <a ?selected="${this._page === 'metadata'}" href="/metadata">XML</a>
         <a ?selected="${this._page === 'view1'}" href="/view1">View One</a>
         <a ?selected="${this._page === 'view2'}" href="/view2">View Two</a>
         <a ?selected="${this._page === 'view3'}" href="/view3">View Three</a>
@@ -200,6 +201,7 @@ class MyApp extends connect(store)(LitElement) {
         @opened-changed="${this._drawerOpenedChanged}">
       <nav class="drawer-list">
         <a ?selected="${this._page === 'login'}" href="/login">Login</a>
+        <a ?selected="${this._page === 'metadata'}" href="/metadata">XML</a>
         <a ?selected="${this._page === 'view1'}" href="/view1">View One</a>
         <a ?selected="${this._page === 'view2'}" href="/view2">View Two</a>
         <a ?selected="${this._page === 'view3'}" href="/view3">View Three</a>
@@ -209,6 +211,7 @@ class MyApp extends connect(store)(LitElement) {
     <!-- Main content -->
     <main role="main" class="main-content">
       <jp-login class="page" ?active="${this._page === 'login'}"></jp-login>
+      <jp-metadata class="page" ?active="${this._page === 'metadata'}"></jp-metadata>
       <my-view1 class="page" ?active="${this._page === 'view1'}"></my-view1>
       <my-view2 class="page" ?active="${this._page === 'view2'}"></my-view2>
       <my-view3 class="page" ?active="${this._page === 'view3'}"></my-view3>
@@ -242,7 +245,7 @@ class MyApp extends connect(store)(LitElement) {
   }
 
   firstUpdated() {
-    installRouter((location) => store.dispatch(navigate(decodeURIComponent(location.pathname))));
+    installRouter((location) => store.dispatch(navigate(location)));
     installOfflineWatcher((offline) => store.dispatch(updateOffline(offline)));
     installMediaQueryWatcher(`(min-width: 460px)`,
         () => store.dispatch(updateDrawerState(false)));
