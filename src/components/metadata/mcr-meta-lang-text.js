@@ -1,9 +1,10 @@
-import {LitElement, html} from "@polymer/lit-element";
+import {LitElement, html, css} from "lit-element";
 import {connect} from "pwa-helpers/connect-mixin.js";
 import {store} from "../../store.js";
 import {stream} from "../../helperTools";
 import {metadataSelector, isEditingSelector} from "../../reducers/metadata";
 import {saveData} from "../../actions/metadata";
+import {SharedStyles} from "../shared-styles";
 
 const mcrMetaLangTextHandler = (metaLangTextObj) => {
   let result = [];
@@ -20,14 +21,17 @@ const mcrMetaLangTextHandler = (metaLangTextObj) => {
 }
 
 class MCRMetaLangText extends connect(store)(LitElement) {
+  static get styles() {
+    return [css`
+      :host { display: block; }
+    `]
+  }
+
   render(){
     if(this._metadataField && this._metadataField.attr.class === "MCRMetaLangText"){
       let metaLangTextObj = this._metadataField;
 
       return html`
-         <style>
-        :host { display: block; }
-        </style>
         ${Object.keys(metaLangTextObj)
           .filter(key => key !== 'attr')
           .map(key => metaLangTextObj[key])

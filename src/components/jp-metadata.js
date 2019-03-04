@@ -1,4 +1,4 @@
-import {html} from "@polymer/lit-element";
+import {html} from "lit-element";
 import {connect} from "pwa-helpers/connect-mixin.js";
 import {store} from "../store.js";
 import {isEditingSelector} from "../reducers/metadata";
@@ -14,6 +14,8 @@ import {
 import metadata from '../reducers/metadata.js';
 
 import './metadata/mcr-meta-lang-text'
+import '@ckeditor/ckeditor5-build-classic/build/ckeditor.js'
+import './my-special-template'
 
 store.addReducers({
   metadata,
@@ -25,17 +27,27 @@ import '@polymer/paper-button/paper-button.js';
 import {SharedStyles} from "./shared-styles.js";
 
 class JPMetadata extends connect(store)(PageViewElement) {
+  static get styles(){
+    return [SharedStyles]
+  }
   render() {
     return html`
-        ${SharedStyles}
+        <div>${this._editor ? this._editor : "no editor"}</div>
+        <special-template></special-template>
         <section>
-          <mcr-meta-lang-text name="maintitles"></mcr-meta-lang-text>  
+          <mcr-meta-lang-text name="maintitles"></mcr-meta-lang-text>
           <mcr-meta-lang-text name="subtitles"></mcr-meta-lang-text>  
           <mcr-meta-lang-text name="hidden_templates"></mcr-meta-lang-text>
           <button
                 @click="${this._editing ? this._saveData : this._editData}"
                 title="${this._editing ? 'Speichern' : 'Daten editieren'}">
                 ${this._editing ? 'Speichern' : 'Daten editieren'}
+            </button>
+            
+            <button
+                @click="${this._openeditor}"
+                title="Editor">
+                Editor
             </button>
         </section>
        `;
@@ -45,6 +57,17 @@ class JPMetadata extends connect(store)(PageViewElement) {
     return {
       _editing: Boolean
     }
+  }
+
+  _openeditor(){
+    ClassicEditor
+      .create(document.getElementById('editor'))
+      .then( editor => {
+        console.log( editor );
+      } )
+      .catch( error => {
+        console.error( error );
+      } );
   }
 
   _editData(){
@@ -60,6 +83,7 @@ class JPMetadata extends connect(store)(PageViewElement) {
   stateChanged(state) {
     this._editing = isEditingSelector(state);
     console.log(state);
+    console.log(this.shadowRoot);
   }
 }
 

@@ -8,7 +8,7 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 */
 
-import { html } from '@polymer/lit-element';
+import { html, css } from 'lit-element';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/paper-input/paper-input.js';
@@ -18,9 +18,10 @@ import { PageViewElement } from './page-view-element.js';
 import { SharedStyles } from './shared-styles.js';
 
 class MyView1 extends PageViewElement {
-  render() {
-    return html`
-      <style>
+  static get styles() {
+    return [
+      SharedStyles,
+      css`
       paper-input.search {
       /*margin-bottom: 14px;*/
       /*--primary-text-color: #01579B;*/
@@ -58,16 +59,19 @@ class MyView1 extends PageViewElement {
         /*width: auto;*/
       /*};*/
       }
-      </style>
-      
-      ${SharedStyles}
+      `
+    ];
+  }
+
+  render() {
+    return html`
       <section>
         <h2>Static page</h2>
         <p>This is a text-only page.</p>
         <p>It doesn't do anything other than display some static text.</p>
         <paper-input class="search" label="Suche">
         <iron-icon icon="search" slot="prefix"></iron-icon>
-        <!--<div slot="suffix">@email.com</div>-->
+        <div slot="suffix">@email.com</div>
        </paper-input>
       </section>
       
